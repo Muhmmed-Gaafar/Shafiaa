@@ -16,9 +16,10 @@ class AdminFactory extends Factory
             'name' => $this->faker->name,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
-            'password' =>'password',
+            'password' => bcrypt('password'),
             'api_key' => Str::random(32),
             'job_title' => $this->faker->jobTitle,
+            'organization_id' => \App\Models\Organization::factory(),
         ];
     }
 }

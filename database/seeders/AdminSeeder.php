@@ -14,6 +14,9 @@ class AdminSeeder extends Seeder
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt('123123123'),
+                'api_key' => str_random(60),
+                'phone' => '0123456789',
+                'organization_id' => 1,
             ]
         );
         Admin::factory()->count(10)->create();

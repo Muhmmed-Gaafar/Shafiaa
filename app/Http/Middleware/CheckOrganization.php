@@ -5,23 +5,22 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Organization;
+use App\Models\Teacher;
 
 class CheckOrganization
 {
 
     public function handle(Request $request, Closure $next)
     {
-        $webKey = $request->header('web_key');
-        if (!$webKey) {
-            return response()->json(['error' => 'web_key is required'], 400);
+            $webKey = $request->header('web_key');
+            $organization = Organization::where('web_key', $webKey)->first();
+            if ($organization) {
+                $teacher = Teacher::where('organization_id', $organization->id)->first();
+                if ($teacher) {
+                    return $next($request);
+                }
+                return response()->json(['message' => ' Has No Organization']);
         }
-        $organization = Organization::where('web_key', $webKey)->first();
-
-        if (!$organization) {
-            return response()->json(['error' => 'Invalid web_key'], 401);
-        }
-        $request->attributes->set('organization', $organization);
-
-        return $next($request);
+        return response()->json(['message' => ' Has No Organization']);
     }
 }

@@ -11,19 +11,29 @@ use Exception;
 
 class OrganizationService
 {
-    public function getAllOrganizations(): DataStatus
+    public function getAllOrganizations($request): DataStatus
     {
         try {
-            $organizations = Organization::all();
+            $webKey = $request->header('web_key');
+            $organization = Organization::where('web_key', $webKey)->first();
+//            if (!$organization) {
+//                return new DataFailed(
+//                    statusCode: 404,
+//                    message: 'Organization not found'
+//                );
+//            }
+//            $organization_id = $organization->id;
+            $organization = Organization::all();
+
             return new DataSuccess(
-                data: OrganizationResource::collection($organizations),
+                data: OrganizationResource::collection($organization),
                 statusCode: 200,
-                message: 'Organizations retrieved successfully'
+                message: 'Organization retrieved successfully'
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new DataFailed(
                 statusCode: 500,
-                message: 'Failed to retrieve organizations: ' . $e->getMessage()
+                message: 'Failed to retrieve Organization: ' . $e->getMessage()
             );
         }
     }

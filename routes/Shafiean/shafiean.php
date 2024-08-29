@@ -42,14 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [DisabilityTypeController::class, 'destroy'])->name('disability_types.destroy');
     });
 
-// Organization Routes
-    Route::prefix('organizations')->group(function () {
-        Route::get('/', [OrganizationController::class, 'index'])->name('organizations.index');
-        Route::post('/', [OrganizationController::class, 'store'])->name('organizations.store');
-        Route::get('/{id}', [OrganizationController::class, 'show'])->name('organizations.show');
-        Route::put('/{id}', [OrganizationController::class, 'update'])->name('organizations.update');
-        Route::delete('/{id}', [OrganizationController::class, 'destroy'])->name('organizations.destroy');
-    });
+
 
 // Curriculum Routes
     Route::prefix('curriculums')->group(function () {

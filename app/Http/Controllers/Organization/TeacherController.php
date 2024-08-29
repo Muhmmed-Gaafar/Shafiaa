@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organization;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Teacher\TeacherRequest;
 use App\Services\TeacherService;
+use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
@@ -15,9 +16,9 @@ class TeacherController extends Controller
         $this->teacherService = $teacherService;
     }
 
-    public function index()
+    public function index(Request $request  )
     {
-       return $this->teacherService->getAllTeachers()->response();
+       return $this->teacherService->getAllTeachers($request  )->response();
 
     }
 

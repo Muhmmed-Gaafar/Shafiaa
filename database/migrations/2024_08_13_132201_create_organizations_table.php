@@ -10,7 +10,8 @@ class CreateOrganizationsTable  extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('api_key')->nullable();
+            $table->string('web_key')->nullable();
             $table->string('name', 191)->nullable();
             $table->string('licence_number')->nullable();
             $table->string('phone')->nullable();
@@ -19,13 +20,13 @@ class CreateOrganizationsTable  extends Migration
             $table->string('manager_name')->nullable();
             $table->string('manager_phone')->nullable();
             $table->string('manager_email', 191)->nullable();
-            $table->string('api_key')->nullable();
-            $table->string('web_key')->nullable();
             $table->unsignedBigInteger('country_id')->nullable();
-            $table->foreign('country_id')->references('id')->on('countries');
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null')->onUpdate('cascade');
             $table->unsignedBigInteger('city_id')->nullable();
-            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('set null')->onUpdate('cascade');
+            $table->timestamps();
         });
+
     }
 
     public function down()

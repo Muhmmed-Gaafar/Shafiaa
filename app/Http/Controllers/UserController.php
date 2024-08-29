@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
-
+use Illuminate\Http\Request;
 class UserController extends Controller
 {
     use HasApiTokens, Notifiable;
@@ -19,9 +19,9 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->userService->getAllUsers()->response();
+        return $this->userService->getAllUsers($request)->response();
 
     }
 

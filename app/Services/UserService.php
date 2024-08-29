@@ -7,13 +7,16 @@ use App\Helpers\Response\DataStatus;
 use App\Helpers\Response\DataSuccess;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Organization;
 use App\Models\User;
+use App\Trait\OrganizationTrait;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
+    use OrganizationTrait;
     public function createUser(array $data): DataStatus
     {
         try {
@@ -82,15 +85,31 @@ class UserService
             );
         }
     }
-
-    public function getAllUsers():DataStatus
+    public function getAllUsers($request)
     {
-        $users = User::all();
-        return new DataSuccess(
-            data:  UserResource::collection($users),
-            statusCode: 200,
-            message: 'User updated successfully'
-        );
+        try {
+            $webKey = $request->header('web_key');
+            $organization = Organization::where('web_key', $webKey)->first();
+            if (!$organization) {
+                return new DataFailed(
+                    statusCode: 404,
+                    message: 'Organization not found'
+                );
+            }
+            $organization_id = $organization->id;
+            $user = User::where('organization_id', $organization_id)->get();
+
+            return new DataSuccess(
+                data: UserResource::collection($user),
+                statusCode: 200,
+                message: 'Teachers retrieved successfully'
+            );
+        } catch (\Exception $e) {
+            return new DataFailed(
+                statusCode: 500,
+                message: 'Failed to retrieve teachers: ' . $e->getMessage()
+            );
+        }
     }
 
     public function getUserById($id)

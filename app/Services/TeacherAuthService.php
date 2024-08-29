@@ -51,7 +51,7 @@ class TeacherAuthService
             }
             DB::commit();
             return new DataSuccess(
-                message: 'Admin logout successful'
+                message: 'Teacher logout successful'
             );
         } catch (\Exception $e) {
             DB::rollBack();

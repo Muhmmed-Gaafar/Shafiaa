@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'gender' => $this->gender,
             'api_key' => $this->api_key,
             'image' => url($this->image),
+            'organization_id'=>$this->organization_id,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
             'token' => $this->token

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AuthRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Teacher;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 

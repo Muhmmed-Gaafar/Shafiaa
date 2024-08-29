@@ -6,28 +6,40 @@ use App\Helpers\Response\DataFailed;
 use App\Helpers\Response\DataStatus;
 use App\Helpers\Response\DataSuccess;
 use App\Http\Resources\TeacherResource;
+use App\Models\Organization;
 use App\Models\Teacher;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
 class TeacherService
 {
-    public function getAllTeachers(): DataStatus
+    public function getAllTeachers($request): DataStatus
     {
         try {
-            $teachers = Teacher::all();
+            $webKey = $request->header('web_key');
+            $organization = Organization::where('web_key', $webKey)->first();
+            if (!$organization) {
+                return new DataFailed(
+                    statusCode: 404,
+                    message: 'Organization not found'
+                );
+            }
+            $organization_id = $organization->id;
+            $teachers = Teacher::where('organization_id', $organization_id)->get();
+
             return new DataSuccess(
                 data: TeacherResource::collection($teachers),
                 statusCode: 200,
                 message: 'Teachers retrieved successfully'
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return new DataFailed(
                 statusCode: 500,
                 message: 'Failed to retrieve teachers: ' . $e->getMessage()
             );
         }
     }
+
 
     public function getTeacherById($id): DataStatus
     {

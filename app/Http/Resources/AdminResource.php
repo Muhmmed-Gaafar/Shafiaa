@@ -21,6 +21,7 @@ class AdminResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'job_title' => $this->job_title,
+            'organization_id'=>$this->organization_id,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
             'token' => $this->token,
